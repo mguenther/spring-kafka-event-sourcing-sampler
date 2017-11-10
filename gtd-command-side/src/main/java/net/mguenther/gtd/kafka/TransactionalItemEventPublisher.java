@@ -13,6 +13,8 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 
 /**
+ * Publisher for {@code ItemEvent}s that exhibits transactional guarantees.
+ *
  * @author Markus Günther (markus.guenther@gmail.com)
  * @author Boris Fresow (bfresow@gmail.com)
  */

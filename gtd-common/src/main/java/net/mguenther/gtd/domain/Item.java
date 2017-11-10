@@ -91,6 +91,13 @@ public class Item implements Serializable {
         return associatedList;
     }
 
+    /**
+     * Mutates the state of this {@code Item} in compliance with the given {@code ItemEvent}.
+     *
+     * @param event
+     *      an event that occured in the system and that signals a change of state
+     *      for the aggregate {@code Item}
+     */
     public void project(final ItemEvent event) {
         if (event instanceof DueDateAssigned) project((DueDateAssigned) event);
         else if (event instanceof RequiredTimeAssigned) project((RequiredTimeAssigned) event);
@@ -101,15 +108,15 @@ public class Item implements Serializable {
         else throw new IllegalStateException("Unrecognized event: " + event.toString());
     }
 
-    public void project(final DueDateAssigned event) {
+    private void project(final DueDateAssigned event) {
         this.dueDate = event.getDueDate();
     }
 
-    public void project(final RequiredTimeAssigned event) {
+    private void project(final RequiredTimeAssigned event) {
         this.requiredTime = event.getRequiredTime();
     }
 
-    public void project(final TagAssigned event) {
+    private void project(final TagAssigned event) {
         synchronized (this) {
             if (!tags.contains(event.getTag())) {
                 tags.add(event.getTag());
@@ -117,17 +124,17 @@ public class Item implements Serializable {
         }
     }
 
-    public void project(final TagRemoved event) {
+    private void project(final TagRemoved event) {
         synchronized (this) {
             tags.remove(event.getTag());
         }
     }
 
-    public void project(final ItemConcluded event) {
+    private void project(final ItemConcluded event) {
         this.done = true;
     }
 
-    public void project(final ItemMovedToList event) {
+    private void project(final ItemMovedToList event) {
         this.associatedList = event.getList();
     }
 }
