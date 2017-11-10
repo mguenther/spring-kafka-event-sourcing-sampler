@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
+ * Simple {@code Deserializer} that operates on {@code AvroItemEvent}. This {@code Deserializer} does
+ * not support multiple versions of the same schema.
+ *
  * @author Markus Günther (markus.guenther@gmail.com)
  * @author Boris Fresow (bfresow@gmail.com)
  */

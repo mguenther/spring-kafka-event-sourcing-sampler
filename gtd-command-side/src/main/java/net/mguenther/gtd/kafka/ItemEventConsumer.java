@@ -12,6 +12,10 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 /**
+ * Consumes {@code AvroItemEvent}s that update the internal state of domain for the command-side. This is
+ * essential so that the validation that a {@code CommandHandler} performs always goes against the most
+ * recent state.
+ *
  * @author Markus Günther (markus.guenther@gmail.com)
  * @author Boris Fresow (bfresow@gmail.com)
  */

@@ -5,6 +5,8 @@ import net.mguenther.gtd.domain.event.ItemEvent;
 import java.util.concurrent.CompletableFuture;
 
 /**
+ * Consumes {@code ItemEvent}s and acts upon them.
+ *
  * @author Markus Günther (markus.guenther@gmail.com)
  * @author Boris Fresow (bfresow@gmail.com)
  */

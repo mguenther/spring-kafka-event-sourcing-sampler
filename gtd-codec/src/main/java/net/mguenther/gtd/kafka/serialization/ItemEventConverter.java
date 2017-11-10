@@ -14,22 +14,25 @@ import java.time.Instant;
 import java.util.Date;
 
 /**
+ * Converts bidirectionally between domain events and their respective Avro representation.
+ * This is a bit of a mess, but we have to cope with it due to the lack of polymorphy and
+ * inheritance in Avro.
+ *
  * @author Markus Günther (markus.guenther@gmail.com)
  * @author Boris Fresow (bfresow@gmail.com)
  */
 @Component
 public class ItemEventConverter {
 
-    private AvroItemEvent wrap(final ItemEvent event, final Object eventPayload) {
-
-        return AvroItemEvent
-                .newBuilder()
-                .setEventId(event.getEventId())
-                .setTimestamp(event.getTimestamp())
-                .setData(eventPayload)
-                .build();
-    }
-
+    /**
+     * Consumes a domain event of type {@code ItemEvent} and returns its corresponding
+     * Avro type (cf. {@code AvroItemEvent}).
+     *
+     * @param event
+     *      the domain event that ought to be converted
+     * @return
+     *      instance of {@code AvroItemEvent} that mirrors the domain event
+     */
     public AvroItemEvent from(final ItemEvent event) {
 
         if (event instanceof ItemCreated) return from((ItemCreated) event);
@@ -111,6 +114,25 @@ public class ItemEventConverter {
         return wrap(event, avroEvent);
     }
 
+    private AvroItemEvent wrap(final ItemEvent event, final Object eventPayload) {
+
+        return AvroItemEvent
+                .newBuilder()
+                .setEventId(event.getEventId())
+                .setTimestamp(event.getTimestamp())
+                .setData(eventPayload)
+                .build();
+    }
+
+    /**
+     * Consumes an Avro event of type {@code AvroItemEvent} and returns its corresponding
+     * domain event (cf. {@code ItemEvent}).
+     *
+     * @param event
+     *      the Avro event that ought to be converted
+     * @return
+     *      instance of {@code ItemEvent} that mirrros the Avro event
+     */
     public ItemEvent to(final AvroItemEvent event) {
 
         final String eventId = String.valueOf(event.getEventId());

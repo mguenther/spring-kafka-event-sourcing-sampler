@@ -24,7 +24,6 @@ public class TransactionalItemEventPublisherConfig {
     @Bean
     public ProducerFactory<String, AvroItemEvent> producerFactory() {
         final Map<String, Object> config = new HashMap<>();
-        // TODO (mgu): Extract to config value
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ItemEventSerializer.class);
