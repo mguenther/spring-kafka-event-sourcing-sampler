@@ -43,6 +43,154 @@ $ docker-compose scale kafka=1   # scales down to 1 Kafka broker after the previ
 
 After changing the number of Kafka brokers, give the cluster some time so that all brokers can finish their cluster-join procedure. This should complete in a couple of seconds and you can inspect the output of the resp. Docker containers just to be sure that everything is fine. Kafka Manager should also reflect the change in the number of Kafka brokers after they successfully joined the cluster.
 
+## Using the API
+
+Running the provided `docker-compose` will fire up a couple of services. First of all, Apache Kafka as well as Apache ZooKeeper, then both the command and query side of the GTD application as well as to small services for the sake of service discovery and to unify the API. The API gateway is listening at `localhost:8765`. You will have to interact with the API gateway, which takes care of the proper routing to one instance of the command or the query side of the application.
+
+### Overview
+
+| API Endpoint | Method | Example |
+| ------------ | -------------- | ------- |
+| `/items` | POST | Creates a new item. |
+| `/items` | GET | Lists all items that are currently managed. |
+| `/items/{itemId}` | GET | Lists the details of a specific item. |
+| `/items/{itemId}` | PUT | Modifies an existing item. |
+| `/items/{itemId}` | DELETE | Closes an existing item. |
+
+The following sections will walk you through a simple example on how to use the API via cURL.
+
+### Creating a new item
+
+To create new item, we simply have to provide a short description of it in JSON along with the HTTP payload.
+
+```json
+{
+  "description": "Go shopping"
+}
+```
+
+Using cURL we can create the item:
+
+```bash
+$ curl http://localhost:8765/api/items -X POST -H "Content-Type: application/json" -d '{"description":"Go shopping"}'
+```
+
+This request will be routed to an instance of the command-side of the GTD application, where the command will be validated before the proper event will be persisted to the event log.
+
+### Retrieving a list of all items
+
+After creating an item, we'd like to inspect what items our GTD application currently manages. There is an HTTP endpoint for that as well. If you issue the following cURL request
+
+```bash
+$ curl http://localhost:8765/api/items
+```
+
+you see something along the lines of the following output (pretty-printed).
+
+```json
+[
+  {
+    "id": "07bad2d",
+    "description": "Go shopping",
+    "requiredTime": 0,
+    "dueDate": null,
+    "tags": [      
+    ],
+    "associatedList": null,
+    "done": false
+  }
+]
+```
+
+This shows the item we just created in full detail.
+
+### Retrieving a single item
+
+We can retrieve details of a dedicated item as well. With the next cURL command, we request the item details for the item we just created (id: `07bad2d`).
+
+```bash
+$ curl http://localhost:8765/api/items/07bad2d
+```
+
+This yields the following output (pretty-printed):
+
+```json
+{
+  "id": "07bad2d",
+  "description": "Go shopping",
+  "requiredTime": 0,
+  "dueDate": null,
+  "tags": [
+      ],
+  "associatedList": null,
+  "done": false
+}
+```
+
+### Modifying an existing item
+
+Let's try to update the item and associate it with a list of tags, a required time and put it into a dedicated list. The payload for this update looks like this:
+
+```json
+{
+  "tags": ["weekly"],
+  "associatedList": "project",
+  "requiredTime": 5
+}
+```
+
+To issue the update, we simply execute the following cURL command.
+
+```bash
+$ curl http://localhost:8765/api/items/07bad2d -X PUT -H "Content-Type:application/json" -d '{"tags": ["weekly"], "associatedList":"project", "requiredTime":5}'
+```
+
+This will validate the individiual update commands extracted from the payload against the current state of the item. If the validation holds, the respective events will be emitted and the state of the item will be updated. If we look at the details of the item again using
+
+```bash
+$ curl http://localhost:8765/api/items/07bad2d
+```
+
+we see that the update has been successfully applied.
+
+```json
+{
+  "id": "07bad2d",
+  "description": "Go shopping",
+  "requiredTime": 5,
+  "dueDate": null,
+  "tags": [
+    "weekly"
+  ],
+  "associatedList": "project",
+  "done": false
+}
+```
+
+### Closing an item
+
+To close an item, we issue a DELETE request via cURL.
+
+```bash
+$ curl http://localhost:8765/api/items/07bad2d -X DELETE
+```
+
+Looking again at the details of the item, we see that its `done` attribute is now `true`.
+
+```json
+{
+  "id": "07bad2d",
+  "description": "Go shopping",
+  "requiredTime": 5,
+  "dueDate": null,
+  "tags": [
+    "weekly"
+  ],
+  "associatedList": "project",
+  "done": true
+}
+```
+
 ## License
 
 This work is released under the terms of the MIT license.
