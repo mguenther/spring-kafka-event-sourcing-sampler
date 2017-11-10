@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: gtd-es-command-side

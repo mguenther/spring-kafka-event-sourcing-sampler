@@ -1,0 +1,56 @@
+version: '2'
+services:
+  zookeeper:
+    image: getting-things-done/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: getting-things-done/kafka
+    links:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_CREATE_TOPICS: "topic-getting-things-done:5:1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  discovery:
+    image: getting-things-done/discovery-service
+    ports:
+     - "8761:8761"
+    environment:
+      eureka.instance.hostname: discovery
+  gateway:
+    image: getting-things-done/api-gateway
+    links:
+      - discovery
+      - gtd-command-side
+      - gtd-query-side
+    ports:
+      - "8765:8765"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka
+  gtd-command-side:
+    image: getting-things-done/gtd-command-side
+    links:
+      - discovery
+    ports:
+     - "8090:8090"
+    environment:
+      SERVER_PORT: 8090
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/
+  gtd-query-side:
+    image: getting-things-done/gtd-query-side
+    links:
+      - discovery
+    ports:
+     - "8089:8089"
+    environment:
+      SERVER_PORT: 8089
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery:8761/eureka/

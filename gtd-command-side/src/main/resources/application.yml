@@ -1,0 +1,33 @@
+server:
+  contextPath: /api
+  port: 8089
+
+management:
+  security:
+    enabled: false
+
+spring:
+  kafka:
+    bootstrapServers: localhost:9092
+    consumer:
+      groupId: getting-things-done-command
+      keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
+      valueDeserializer: net.mguenther.gtd.kafka.serialization.ItemEventDeserializer
+      autoOffsetReset: earliest
+      enableAutoCommit: false
+    listener:
+      ackMode: MANUAL
+
+gtd:
+  topic: topic-getting-things-done
+
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    appname: gtd-es-command-side
+    preferIpAddress: true

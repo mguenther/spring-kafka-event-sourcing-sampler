@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.mguenther.gtd</groupId>
+        <artifactId>gtd-parent</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>gtd-codec</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <name>[GTD] Event Serialization / Deserialization</name>
+    <url>https://github.com/mguenther/spring-kafka-event-sourcing-sampler</url>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessors>
+                        <annotationProcessor>lombok.launch.AnnotationProcessorHider$AnnotationProcessor
+                        </annotationProcessor>
+                    </annotationProcessors>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>${avro.version}</version>
+                <executions>
+                    <execution>
+                        <id>schemas</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                            <goal>protocol</goal>
+                            <goal>idl-protocol</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                            <stringType>String</stringType>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- Intra-project dependencies -->
+        <dependency>
+            <groupId>net.mguenther.gtd</groupId>
+            <artifactId>gtd-common</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Persistence -->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <!-- Spring -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <!-- Utilities -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- Avro -->
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+        </dependency>
+    </dependencies>
+</project>

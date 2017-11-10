@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker build -t getting-things-done/kafka kafka/
+docker build -t getting-things-done/zookeeper zookeeper
+docker build -t getting-things-done/api-gateway ../gtd-api-gateway
+docker build -t getting-things-done/discovery-service ../gtd-discovery-service
+docker build -t getting-things-done/gtd-command-side ../gtd-command-side
+docker build -t getting-things-done/gtd-query-side ../gtd-query-side

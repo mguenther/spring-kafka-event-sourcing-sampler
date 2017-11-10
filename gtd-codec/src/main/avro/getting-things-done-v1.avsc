@@ -1,0 +1,74 @@
+{
+    "namespace": "net.mguenther.gtd.kafka.serialization",
+    "type": "record",
+    "name": "AvroItemEvent",
+    "fields": [
+        {"name": "eventId", "type": "string"},
+        {"name": "timestamp", "type": "long"},
+        {"name": "data", "type": [
+
+            {
+                "name": "AvroItemCreated",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "description", "type": "string"}
+                ]
+            },
+
+            {
+                "name": "AvroItemConcluded",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"}
+                ]
+            },
+
+            {
+                "name": "AvroRequiredTimeAssigned",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "requiredTime", "type": "int"}
+                ]
+            },
+
+            {
+                "name": "AvroDueDateAssigned",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "dueDate", "type": "long"}
+                ]
+            },
+
+            {
+                "name": "AvroTagAssigned",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "tag", "type": "string"}
+                ]
+            },
+
+            {
+                "name": "AvroTagRemoved",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "tag", "type": "string"}
+                ]
+            },
+
+            {
+                "name": "AvroItemMovedToList",
+                "type": "record",
+                "fields": [
+                    {"name": "itemId", "type": "string"},
+                    {"name": "list", "type": "string"}
+                ]
+            }
+        ]
+        }
+    ]
+}
