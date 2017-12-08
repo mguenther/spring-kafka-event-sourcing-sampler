@@ -1,5 +1,7 @@
 # Event Sourcing using Spring Kafka
 
+[![Build Status](https://travis-ci.org/mguenther/spring-kafka-event-sourcing-sampler.svg?branch=master)](https://travis-ci.org/mguenther/spring-kafka-event-sourcing-sampler.svg)
+
 This repository contains a sample application that demonstrates how to implement an Event-sourced systems using the CQRS architectural style. The solution uses Apache Kafka, which we easily integrate into a Spring Boot based application using Spring Kafka, Apache Avro for event serialization and deserialization and uses an in-memory H2 database that contributes to the query side of our CQRS-based system. The application itself is minimal and implements a subset of David Allen's Getting Things Done time management method.
 
 The code presented in this repository is the joint work of [Boris Fresow](mailto://bfresow@gmail.com) and [Markus Günther](mailto://markus.guenther@gmail.com) as part of an article series on **Building Event-based applications with Spring Kafka** for the German [JavaMagazin](https://jaxenter.de/magazine/java-magazin).
