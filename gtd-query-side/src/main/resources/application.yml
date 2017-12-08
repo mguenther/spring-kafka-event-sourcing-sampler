@@ -11,6 +11,7 @@ spring:
       valueDeserializer: net.mguenther.gtd.kafka.serialization.ItemEventDeserializer
       autoOffsetReset: latest
       enableAutoCommit: false
+      isolationLevel: read_committed
     listener:
       ackMode: MANUAL
 
