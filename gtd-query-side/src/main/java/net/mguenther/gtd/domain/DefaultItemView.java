@@ -35,6 +35,6 @@ public class DefaultItemView implements ItemView {
     @Override
     public CompletableFuture<Optional<Item>> getItem(final String itemId) {
 
-        return CompletableFuture.supplyAsync(() -> Optional.of(repository.getOne(itemId)));
+        return CompletableFuture.supplyAsync(() -> repository.findById(itemId));
     }
 }

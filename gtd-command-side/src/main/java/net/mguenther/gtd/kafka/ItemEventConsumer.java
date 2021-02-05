@@ -35,7 +35,7 @@ public class ItemEventConsumer {
         this.eventHandler = eventHandler;
     }
 
-    @KafkaListener(topics = "${gtd.topic}", groupId = "getting-things-done")
+    @KafkaListener(topics = "${gtd.topic}", groupId = "${gtd.groupId}")
     public void consume(final AvroItemEvent itemEvent, final Acknowledgment ack) {
         final ItemEvent event = converter.to(itemEvent);
         log.debug("Received event {}. Trying to apply it to the latest state of aggregate with ID {}.", event, event.getItemId());

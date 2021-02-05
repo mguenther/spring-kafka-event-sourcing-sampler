@@ -9,7 +9,6 @@ spring:
   kafka:
     bootstrapServers: localhost:9092
     consumer:
-      groupId: getting-things-done-query
       keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
       valueDeserializer: net.mguenther.gtd.kafka.serialization.ItemEventDeserializer
       autoOffsetReset: latest
@@ -20,6 +19,7 @@ spring:
 
 gtd:
   topic: topic-getting-things-done
+  groupId: getting-thigns-done-query
 
 management:
   security:

@@ -13,7 +13,6 @@ spring:
   kafka:
     bootstrapServers: localhost:9092
     consumer:
-      groupId: getting-things-done-command
       keyDeserializer: org.apache.kafka.common.serialization.StringDeserializer
       valueDeserializer: net.mguenther.gtd.kafka.serialization.ItemEventDeserializer
       autoOffsetReset: earliest
@@ -21,9 +20,13 @@ spring:
       isolationLevel: read_committed
     listener:
       ackMode: MANUAL
+    producer:
+      bootstrapServers: localhost:9092
+      transaction-id-prefix: gtd-es
 
 gtd:
   topic: topic-getting-things-done
+  groupId: getting-thigns-done-command
 
 eureka:
   client:

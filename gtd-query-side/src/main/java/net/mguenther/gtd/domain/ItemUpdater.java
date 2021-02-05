@@ -44,9 +44,10 @@ public class ItemUpdater implements EventHandler {
     }
 
     private void modifyExistingItem(final ItemEvent event) {
-        final Item item = repository.getOne(event.getItemId());
-        item.project(event);
-        final Item updatedItem = repository.save(item);
-        log.info("Applied event {} to the aggregate with ID {} and current state {}.", event, event.getItemId(), updatedItem);
+        repository.findById(event.getItemId()).ifPresent(item -> {
+            item.project(event);
+            final Item updatedItem = repository.save(item);
+            log.info("Applied event {} to the aggregate with ID {} and current state {}.", event, event.getItemId(), updatedItem);
+        });
     }
 }
