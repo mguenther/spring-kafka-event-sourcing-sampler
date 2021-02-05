@@ -1,12 +1,15 @@
 server:
-  contextPath: /api
   port: 8089
+  servlet:
+    context-path: /api
 
 management:
   security:
     enabled: false
 
 spring:
+  application:
+    name: gtd-es-command-side
   kafka:
     bootstrapServers: localhost:9092
     consumer:
@@ -29,6 +32,7 @@ eureka:
       enabled: true
     serviceUrl:
       defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    register-with-eureka: true
   instance:
     appname: gtd-es-command-side
     preferIpAddress: true

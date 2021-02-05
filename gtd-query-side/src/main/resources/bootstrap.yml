@@ -1,3 +1,9 @@
 spring:
   application:
     name: gtd-es-query-side
+  cloud:
+    discovery:
+      enabled: true
+      client:
+        health-indicator:
+          enabled: true
