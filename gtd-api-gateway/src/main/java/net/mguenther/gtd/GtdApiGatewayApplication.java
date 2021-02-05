@@ -1,5 +1,6 @@
 package net.mguenther.gtd;
 
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Bean;
 public class GtdApiGatewayApplication {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(GtdApiGatewayApplication.class).web(true).run(args);
+        new SpringApplicationBuilder(GtdApiGatewayApplication.class).web(WebApplicationType.SERVLET).run(args);
     }
 
     @Bean

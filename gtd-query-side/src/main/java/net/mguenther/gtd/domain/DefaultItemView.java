@@ -27,8 +27,7 @@ public class DefaultItemView implements ItemView {
     public CompletableFuture<List<Item>> getItems() {
 
         return CompletableFuture.supplyAsync(() -> {
-            final List<Item> items = new ArrayList<>();
-            items.addAll(repository.findAll());
+            final List<Item> items = new ArrayList<>(repository.findAll());
             return Collections.unmodifiableList(items);
         });
     }
@@ -36,6 +35,6 @@ public class DefaultItemView implements ItemView {
     @Override
     public CompletableFuture<Optional<Item>> getItem(final String itemId) {
 
-        return CompletableFuture.supplyAsync(() -> Optional.ofNullable(repository.findOne(itemId)));
+        return CompletableFuture.supplyAsync(() -> Optional.of(repository.getOne(itemId)));
     }
 }
