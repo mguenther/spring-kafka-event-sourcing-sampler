@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -37,9 +38,11 @@ public class ItemsCommandResource {
 
         log.info("Received a create item request with data {}.", createItem);
 
+        ItemCommand createItemCommand = commandsFor(createItem);
+
         return commandHandler
-                .onCommand(commandsFor(createItem))
-                .thenApply(dontCare -> ResponseEntity.accepted().build())
+                .onCommand(createItemCommand)
+                .thenApply(dontCare -> ResponseEntity.created(itemUri(createItemCommand.getItemId())).build())
                 .exceptionally(e -> {
                     log.warn("Caught an exception at the service boundary.", e);
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -48,5 +51,9 @@ public class ItemsCommandResource {
 
     private ItemCommand commandsFor(final CreateItemRequest createItem) {
         return new CreateItem(createItem.getDescription());
+    }
+
+    private URI itemUri(final String itemId) {
+        return URI.create("/items/" + itemId);
     }
 }

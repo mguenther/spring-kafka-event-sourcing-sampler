@@ -42,13 +42,5 @@ public class ItemsQueryResource {
                 .exceptionally(e -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
-    @RequestMapping(path = "/items/{itemId}", method = RequestMethod.GET, produces = "application/json")
-    public CompletableFuture<ResponseEntity<Item>> showItem(@PathVariable("itemId") String itemId) {
 
-        log.info("Received a show item request for item with ID {}.", itemId);
-
-        return itemView.getItem(itemId)
-                .thenApply(optionalItem -> optionalItem.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build()))
-                .exceptionally(e -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
-    }
 }
