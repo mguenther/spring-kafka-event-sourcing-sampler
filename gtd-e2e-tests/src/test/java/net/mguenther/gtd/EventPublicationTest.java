@@ -15,6 +15,7 @@ import net.mguenther.gtd.kafka.serialization.ItemEventConverter;
 import net.mguenther.gtd.kafka.serialization.ItemEventDeserializer;
 import net.mguenther.kafka.junit.ExternalKafkaCluster;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import static net.mguenther.kafka.junit.ObserveKeyValues.on;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
+@Disabled
 public class EventPublicationTest {
 
     private static final String URL = "http://localhost:8765/api";
