@@ -30,7 +30,7 @@
         <spring.version>5.3.3</spring.version>
         <spring.kafka.version>2.6.5</spring.kafka.version>
         <spring-cloud.version>2020.0.0</spring-cloud.version>
-        <avro.version>1.8.1</avro.version>
+        <avro.version>1.11.3</avro.version>
         <commons-lang3.version>3.5</commons-lang3.version>
         <openfeign.version>11.0</openfeign.version>
         <httpclient.version>4.5.13</httpclient.version>
